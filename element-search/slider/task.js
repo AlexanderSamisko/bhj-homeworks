@@ -1,54 +1,50 @@
 const sliderItems = document.getElementsByClassName(`slider__item`);
 let sliderItemsArray = Array.from(sliderItems);
-let activeSlideNumber = 0;
+let startingSlideNumber = 0;
 const sliderDot = document.getElementsByClassName(`slider__dot`);
-sliderDot[activeSlideNumber].className = `slider__dot slider__dot_active`;
+sliderDot[startingSlideNumber].className = `slider__dot slider__dot_active`;
 
-function getActiveSlideNumber() {
-    for (i = 0; i < sliderItemsArray.length; i++) {
-        if (sliderItemsArray[i].classList.contains(`slider__item_active`)){
-            activeSlideNumber = i;
-        }
-    }
+function getActiveSlideNumber(i) {
+    return i.classList.contains(`slider__item_active`)
 }
 const sliderArrowNext = document.querySelector(`div.slider__arrow_next`);
 sliderArrowNext.onclick = function() {
-    getActiveSlideNumber();
-    doDeactive();
+    activeSlideNumber = sliderItemsArray.findIndex(getActiveSlideNumber);
+    doDeactive(activeSlideNumber);
     activeSlideNumber = activeSlideNumber + 1;
     if (activeSlideNumber > sliderItemsArray.length - 1) {
         activeSlideNumber = 0;
     }
-    doActive();
+    doActive(activeSlideNumber);
 }
 
 
 const sliderArrowPrevious = document.querySelector(`div.slider__arrow_prev`);
 sliderArrowPrevious.onclick = function() {
-    getActiveSlideNumber();
-    doDeactive();
+    activeSlideNumber = sliderItemsArray.findIndex(getActiveSlideNumber);
+    doDeactive(activeSlideNumber);
     activeSlideNumber = activeSlideNumber - 1;
     if (activeSlideNumber < 0) {
         activeSlideNumber = sliderItemsArray.length - 1;
     }
-    doActive();
+    doActive(activeSlideNumber);
 }
 
 let sliderDotArray = Array.from(sliderDot);
-for (k = 0; k < sliderDotArray.length - 1; k++) {
+for ( let k = 0; k < sliderDotArray.length; k++) {
     sliderDot.item(k).onclick = function() {
-        doDeactive();
+        doDeactive(activeSlideNumber);
         activeSlideNumber = k;
-        doActive();
+        doActive(activeSlideNumber);
     }
 }
 
-function doDeactive() {
-    sliderItems[activeSlideNumber].className = `slider__item`;
-    sliderDot[activeSlideNumber].className = `slider__dot`;
+function doDeactive(a) {
+    sliderItems[a].className = `slider__item`;
+    sliderDot[a].className = `slider__dot`;
 }
 
-function doActive() {
-    sliderItems[activeSlideNumber].className = `slider__item slider__item_active`; 
-    sliderDot[activeSlideNumber].className = `slider__dot slider__dot_active`;
+function doActive(j) {
+    sliderItems[j].className = `slider__item slider__item_active`; 
+    sliderDot[j].className = `slider__dot slider__dot_active`;
 }
