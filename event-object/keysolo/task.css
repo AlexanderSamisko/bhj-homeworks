@@ -1,3 +1,7 @@
+.content {
+  display: flex;
+}
+
 .symbol {
   font-size: 50px;
 }
@@ -9,5 +13,12 @@
 .word_incorrect {
   background: red;
   color: #fff;
+}
+
+.timer {
+  margin-top: 50px;
+  margin-left: 25px;
+  text-align: center;
+  font-size: 25px;
 }
 
