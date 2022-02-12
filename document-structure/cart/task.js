@@ -1,8 +1,19 @@
 // про видимость корзины
 
-let isThereSomthingInCart = function() {
+let isThereSomethingInCart = function() {
     if (localStorage['cart']){
-        document.querySelector(`.cart`).innerHTML = localStorage['cart'];
+        document.querySelector(`.cart__products`).innerHTML = ``;
+        let storage = JSON.parse(localStorage['cart']);
+        for ( let o = 0; o < Object.keys(storage).length; o++) {
+            let cartProduct = `<div class="cart__product" data-id="${storage[o].cartProductID}">
+            <img class="cart__product-image" src="${storage[o].cartProductIMG}">
+            <div class="cart__product-count">${storage[o].cartProductCount}</div>
+            <div>
+            <a href="#" class="product__remove">&times;</a>
+          </div>
+        </div>`
+            document.querySelector(`.cart__products`).insertAdjacentHTML(`beforeEnd`, cartProduct);
+        }
     }
     let cart = document.querySelector(`.cart`);
     if (cart.querySelector(`.cart__product`)){
@@ -12,12 +23,29 @@ let isThereSomthingInCart = function() {
     }
 }
 
-isThereSomthingInCart();
+isThereSomethingInCart();
 
 //  про добавление в корзину
 
 const addButtons = document.querySelectorAll(`.product__add`);
 let addButtonsArray = Array.from(addButtons);
+
+
+let setStorage = function() {
+    let cartProducts = document.querySelectorAll(`.cart__product`);
+    let cartProductsArray = [...cartProducts];
+    let cartProductsInfo = {};
+    for (let k = 0; k < cartProductsArray.length; k++) {
+        cartProductsInfo[k] = {
+            cartProductID : cartProducts[k].getAttribute(`data-id`),
+            cartProductIMG : cartProducts[k].querySelector(`.cart__product-image`).getAttribute(`src`),
+            cartProductCount : cartProducts[k].querySelector(`.cart__product-count`).innerText
+        }
+    }
+    localStorage.setItem(`cart`, JSON.stringify(cartProductsInfo));
+}
+
+
 
 let addToCart = function() {
     let cart = document.querySelector(`.cart`);
@@ -38,7 +66,7 @@ let addToCart = function() {
           </div>
         </div>`
         cart.querySelector(`.cart__products`).insertAdjacentHTML(`beforeEnd`, cartChanges);
-        localStorage.setItem(`cart`, cart.innerHTML);
+        setStorage();
     } else {
         let productY = product.querySelector(`img`).getBoundingClientRect().top;
         let productX = product.querySelector(`img`).getBoundingClientRect().left;
@@ -52,13 +80,6 @@ let addToCart = function() {
         product.querySelector(`img`).insertAdjacentHTML(`afterEnd`, cloneImage);
         cloneImage = product.querySelector(`.clone`);
         let cartProductQuantity = cartProducts[cartProductId].querySelector(`.cart__product-count`);
-        let cartChanges = `<div class="cart__product" data-id="${productId}">
-            <img class="cart__product-image" src="${productImage}">
-            <div class="cart__product-count">${+productQuantity.innerText + +cartProductQuantity.innerText}</div>
-            <div>
-            <a href="#" class="product__remove">&times;</a>
-          </div>
-        </div>`
         let intervalId = setInterval(()=> {
             let cloneImageY = cloneImage.getBoundingClientRect().top;
             let cloneImageX = cloneImage.getBoundingClientRect().left;
@@ -67,9 +88,8 @@ let addToCart = function() {
                 cloneImage.style.left = `${cloneImageX + stepX}px`;
             } else {
                 cloneImage.remove();
-                cartProducts[cartProductId].remove();
-                cart.querySelector(`.cart__products`).insertAdjacentHTML(`beforeEnd`, cartChanges);
-                localStorage.setItem(`cart`, cart.innerHTML);
+                cartProductQuantity.innerText = `${+productQuantity.innerText + +cartProductQuantity.innerText}`
+                setStorage();
                 clearInterval(intervalId);
             }
         }, 25);
@@ -124,17 +144,12 @@ let removeProductFromCart = function(evt) {
     if (evt.target.classList.contains(`product__remove`)) {
         let toRemove = evt.target.closest(`.cart__product`);
         toRemove.remove();
-        localStorage.setItem(`cart`, cart.innerHTML);
-        isThereSomthingInCart();
+        setStorage();
+        isThereSomethingInCart();
     }
 }
 
 cart.addEventListener(`click`, removeProductFromCart);
-document.addEventListener(`DOMContentLoaded`, function()  {
-    if (localStorage['cart']){
-        document.querySelector(`.cart`).innerHTML = localStorage['cart'];
-    }
-});
 
  
     
