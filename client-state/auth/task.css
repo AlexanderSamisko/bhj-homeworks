@@ -46,3 +46,8 @@
   text-align: center;
   flex-direction: column;
 }
+
+#sign_out_btn {
+  max-width: 50%;
+  align-self: center;
+}
