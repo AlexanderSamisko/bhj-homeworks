@@ -2,11 +2,9 @@ const editor = document.querySelector(`#editor`);
 
 editor.value = localStorage.getItem('textArea');
 
-const forSave = function() {
+editor.addEventListener('keyup', ()=> {
     localStorage.textArea = `${editor.value}`;
-}
-
-editor.addEventListener('keyup', forSave);
+});
 
 const clearBtn = document.querySelector(`#clear`);
 
