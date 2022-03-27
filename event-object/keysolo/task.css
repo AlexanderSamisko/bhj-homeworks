@@ -1,5 +1,24 @@
 .content {
   display: flex;
+  justify-content: center;
+}
+
+.do_start {
+  width: 75%;
+  font-size: 15px;
+  color: #f00000;
+  background-color: #000;
+  align-self: center;
+}
+
+.final {
+  display: flex;
+  flex-direction: column;
+}
+
+.do_start:hover {
+  background-color: #DAA520;
+  color: #000;
 }
 
 .symbol {
@@ -10,15 +29,39 @@
   color: green;
 }
 
+.symbol_incorrect {
+  color: red;
+}
+
 .word_incorrect {
   background: red;
   color: #fff;
 }
 
 .timer {
-  margin-top: 50px;
+  border: 1px solid #000;
+  padding: 10px;
   margin-left: 25px;
   text-align: center;
-  font-size: 25px;
+  font-size: 15px;
 }
 
+.card_solo {
+  display: flex;
+  flex-direction: column;
+  justify-content:center;
+  width: 70%;
+  padding: 20px 30px;
+  margin: 0 auto 30px;
+  background-color: #fff;
+  border-radius: 5px;
+}
+
+.card_row {
+  display: flex;
+  justify-content:center;
+}
+
+.word {
+  align-self: center;
+}
